@@ -9,84 +9,102 @@
 <body>
 
   <!-- BARRE LATÉRALE -->
-  <nav class="sidebar" id="sidebar">
+  <nav class="sidebar">
     <div class="sidebar-header">
-      <span class="logo-icon">🔧</span>
-      <span class="logo-text">Artisan Pro</span>
+      <div class="logo-wrap">
+        <div class="logo-icon-box">🔧</div>
+        <div>
+          <div class="logo-text">Artisan Pro</div>
+          <div class="logo-sub">Gestion d'activité</div>
+        </div>
+      </div>
     </div>
+
+    <div class="nav-section-label">Menu</div>
     <ul class="nav-links">
       <li><a href="#" class="nav-item active" data-module="dashboard">
-        <span class="nav-icon">🏠</span><span>Tableau de bord</span>
+        <span class="nav-icon">🏠</span>Tableau de bord
       </a></li>
       <li><a href="#" class="nav-item" data-module="clients">
-        <span class="nav-icon">👥</span><span>Clients</span>
+        <span class="nav-icon">👥</span>Clients
       </a></li>
       <li><a href="#" class="nav-item" data-module="devis">
-        <span class="nav-icon">📄</span><span>Devis</span>
+        <span class="nav-icon">📄</span>Devis
       </a></li>
       <li><a href="#" class="nav-item" data-module="chantiers">
-        <span class="nav-icon">🏗️</span><span>Chantiers</span>
+        <span class="nav-icon">🏗️</span>Chantiers
       </a></li>
       <li><a href="#" class="nav-item" data-module="materiaux">
-        <span class="nav-icon">📦</span><span>Matériaux</span>
+        <span class="nav-icon">📦</span>Matériaux
       </a></li>
     </ul>
-    <div class="sidebar-footer">v1.0</div>
+
+    <div class="sidebar-footer">
+      <span>Artisan Pro</span>
+      <span>v1.0</span>
+    </div>
   </nav>
 
   <!-- CONTENU PRINCIPAL -->
-  <main class="main-content" id="main-content">
+  <main class="main-content">
 
     <!-- TABLEAU DE BORD -->
     <section class="module active" id="module-dashboard">
       <div class="page-header">
-        <h1>Tableau de bord</h1>
-        <p class="subtitle">Bienvenue dans Artisan Pro</p>
+        <div>
+          <h1>Tableau de bord</h1>
+          <p class="subtitle">Vue d'ensemble de votre activité</p>
+        </div>
       </div>
+
       <div class="stats-grid">
         <div class="stat-card" onclick="goTo('clients')">
-          <div class="stat-icon">👥</div>
-          <div class="stat-info">
+          <div class="stat-icon-box blue">👥</div>
+          <div>
             <span class="stat-value" id="stat-clients">0</span>
             <span class="stat-label">Clients</span>
           </div>
         </div>
         <div class="stat-card" onclick="goTo('devis')">
-          <div class="stat-icon">📄</div>
-          <div class="stat-info">
+          <div class="stat-icon-box orange">📄</div>
+          <div>
             <span class="stat-value" id="stat-devis">0</span>
             <span class="stat-label">Devis</span>
           </div>
         </div>
         <div class="stat-card" onclick="goTo('chantiers')">
-          <div class="stat-icon">🏗️</div>
-          <div class="stat-info">
+          <div class="stat-icon-box green">🏗️</div>
+          <div>
             <span class="stat-value" id="stat-chantiers">0</span>
             <span class="stat-label">Chantiers</span>
           </div>
         </div>
         <div class="stat-card" onclick="goTo('materiaux')">
-          <div class="stat-icon">📦</div>
-          <div class="stat-info">
+          <div class="stat-icon-box purple">📦</div>
+          <div>
             <span class="stat-value" id="stat-materiaux">0</span>
             <span class="stat-label">Articles stock</span>
           </div>
         </div>
       </div>
+
       <div class="recent-section">
         <h2>Chantiers en cours</h2>
-        <div id="dashboard-chantiers" class="empty-state">Aucun chantier en cours.</div>
+        <div id="dashboard-chantiers"></div>
       </div>
     </section>
 
     <!-- MODULE CLIENTS -->
     <section class="module" id="module-clients">
       <div class="page-header">
-        <h1>👥 Clients</h1>
+        <div>
+          <h1>Clients</h1>
+          <p class="subtitle">Gérez votre carnet de contacts</p>
+        </div>
         <button class="btn btn-primary" onclick="openModal('modal-client')">+ Nouveau client</button>
       </div>
       <div class="search-bar">
-        <input type="text" id="search-clients" placeholder="Rechercher un client..." oninput="renderClients()" />
+        <input type="text" id="search-clients" placeholder="Rechercher un client…" oninput="renderClients()" />
       </div>
       <div id="clients-list" class="cards-grid"></div>
     </section>
@@ -94,7 +112,10 @@
     <!-- MODULE DEVIS -->
     <section class="module" id="module-devis">
       <div class="page-header">
-        <h1>📄 Devis</h1>
+        <div>
+          <h1>Devis</h1>
+          <p class="subtitle">Créez et suivez vos devis clients</p>
+        </div>
         <button class="btn btn-primary" onclick="openModal('modal-devis')">+ Nouveau devis</button>
       </div>
       <div id="devis-list" class="cards-grid"></div>
@@ -103,7 +124,10 @@
     <!-- MODULE CHANTIERS -->
     <section class="module" id="module-chantiers">
       <div class="page-header">
-        <h1>🏗️ Chantiers</h1>
+        <div>
+          <h1>Chantiers</h1>
+          <p class="subtitle">Suivez l'avancement de vos projets</p>
+        </div>
         <button class="btn btn-primary" onclick="openModal('modal-chantier')">+ Nouveau chantier</button>
       </div>
       <div id="chantiers-list" class="cards-grid"></div>
@@ -112,7 +136,10 @@
     <!-- MODULE MATÉRIAUX -->
     <section class="module" id="module-materiaux">
       <div class="page-header">
-        <h1>📦 Matériaux & Stock</h1>
+        <div>
+          <h1>Matériaux &amp; Stock</h1>
+          <p class="subtitle">Gérez vos articles et fournitures</p>
+        </div>
         <button class="btn btn-primary" onclick="openModal('modal-materiau')">+ Ajouter article</button>
       </div>
       <div id="materiaux-list" class="cards-grid"></div>
@@ -151,7 +178,7 @@
         </div>
         <div class="form-group">
           <label>Notes</label>
-          <textarea id="client-notes" placeholder="Informations complémentaires..."></textarea>
+          <textarea id="client-notes" placeholder="Informations complémentaires…"></textarea>
         </div>
         <div class="modal-actions">
           <button type="button" class="btn btn-secondary" onclick="closeModal('modal-client')">Annuler</button>
@@ -174,7 +201,7 @@
           <div class="form-group">
             <label>Client *</label>
             <select id="devis-client" required>
-              <option value="">-- Sélectionner un client --</option>
+              <option value="">— Sélectionner un client —</option>
             </select>
           </div>
           <div class="form-group">
@@ -184,19 +211,19 @@
         </div>
         <div class="form-group">
           <label>Description des travaux *</label>
-          <textarea id="devis-description" required placeholder="Décrivez les travaux à réaliser..."></textarea>
+          <textarea id="devis-description" required placeholder="Décrivez les travaux à réaliser…"></textarea>
         </div>
         <div class="form-group">
-          <label>Lignes du devis</label>
+          <label>Détail des prestations</label>
           <div id="devis-lignes">
             <div class="ligne-header">
               <span>Description</span><span>Qté</span><span>Prix unit. (€)</span><span>Total</span><span></span>
             </div>
           </div>
-          <button type="button" class="btn btn-secondary btn-sm" onclick="ajouterLigne()">+ Ajouter une ligne</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="ajouterLigne()" style="margin-top:6px">+ Ajouter une ligne</button>
         </div>
         <div class="devis-total">
-          <span>Total HT :</span>
+          <span>Total HT</span>
           <strong id="devis-total-display">0,00 €</strong>
         </div>
         <div class="form-row">
@@ -234,7 +261,7 @@
         <div class="form-group">
           <label>Client</label>
           <select id="chantier-client">
-            <option value="">-- Sélectionner un client --</option>
+            <option value="">— Sélectionner un client —</option>
           </select>
         </div>
         <div class="form-row">
@@ -248,10 +275,9 @@
           </div>
         </div>
         <div class="form-group">
-          <label>Avancement (%)</label>
+          <label>Avancement — <span id="avancement-val">0%</span></label>
           <input type="range" id="chantier-avancement" min="0" max="100" value="0"
             oninput="document.getElementById('avancement-val').textContent = this.value + '%'" />
-          <span id="avancement-val">0%</span>
         </div>
         <div class="form-group">
           <label>Statut</label>
@@ -264,7 +290,7 @@
         </div>
         <div class="form-group">
           <label>Notes</label>
-          <textarea id="chantier-notes" placeholder="Observations, accès, matériaux utilisés..."></textarea>
+          <textarea id="chantier-notes" placeholder="Observations, accès, matériaux…"></textarea>
         </div>
         <div class="modal-actions">
           <button type="button" class="btn btn-secondary" onclick="closeModal('modal-chantier')">Annuler</button>
@@ -290,18 +316,13 @@
         <div class="form-row">
           <div class="form-group">
             <label>Catégorie</label>
-            <input type="text" id="materiau-categorie" placeholder="Maçonnerie, Plomberie..." />
+            <input type="text" id="materiau-categorie" placeholder="Maçonnerie, Plomberie…" />
           </div>
           <div class="form-group">
             <label>Unité</label>
             <select id="materiau-unite">
-              <option>sac</option>
-              <option>m²</option>
-              <option>m³</option>
-              <option>ml</option>
-              <option>pièce</option>
-              <option>litre</option>
-              <option>kg</option>
+              <option>sac</option><option>m²</option><option>m³</option>
+              <option>ml</option><option>pièce</option><option>litre</option><option>kg</option>
             </select>
           </div>
         </div>
@@ -317,7 +338,7 @@
         </div>
         <div class="form-group">
           <label>Fournisseur</label>
-          <input type="text" id="materiau-fournisseur" placeholder="Point P, Leroy Merlin..." />
+          <input type="text" id="materiau-fournisseur" placeholder="Point P, Leroy Merlin…" />
         </div>
         <div class="modal-actions">
           <button type="button" class="btn btn-secondary" onclick="closeModal('modal-materiau')">Annuler</button>
@@ -327,7 +348,7 @@
     </div>
   </div>
 
-  <!-- Toast de notification -->
+  <!-- Toast -->
   <div class="toast" id="toast"></div>
 
   <script src="js/app.js"></script>

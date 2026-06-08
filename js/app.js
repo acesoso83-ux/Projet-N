@@ -81,7 +81,7 @@ function renderDashboard() {
   const enCours = data.chantiers.filter(c => c.statut === 'en-cours');
   const container = document.getElementById('dashboard-chantiers');
   if (enCours.length === 0) {
-    container.innerHTML = '<div class="empty-state">Aucun chantier en cours.</div>';
+    container.innerHTML = '<div class="empty-state"><span class="empty-icon">🏗️</span>Aucun chantier en cours.</div>';
     return;
   }
   container.innerHTML = '';
@@ -103,22 +103,25 @@ function renderClients() {
   );
   const container = document.getElementById('clients-list');
   if (list.length === 0) {
-    container.innerHTML = '<div class="empty-state">Aucun client enregistré. Cliquez sur "+ Nouveau client" pour commencer.</div>';
+    container.innerHTML = '<div class="empty-state"><span class="empty-icon">👥</span>Aucun client enregistré. Cliquez sur "+ Nouveau client" pour commencer.</div>';
     return;
   }
   container.innerHTML = list.map(c => `
     <div class="card">
       <div class="card-header">
-        <div class="card-title">${c.nom}</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="client-avatar">${initiales(c.nom)}</div>
+          <div class="card-title">${c.nom}</div>
+        </div>
         <div class="card-actions">
-          <button class="btn btn-icon btn-sm" onclick="editClient('${c.id}')" title="Modifier">✏️</button>
-          <button class="btn btn-icon btn-sm btn-danger" onclick="deleteClient('${c.id}')" title="Supprimer">🗑️</button>
+          <button class="btn btn-icon btn-sm" onclick="editClient('${c.id}')">✏️</button>
+          <button class="btn btn-icon btn-sm" onclick="deleteClient('${c.id}')">🗑️</button>
         </div>
       </div>
-      ${c.tel   ? `<div class="card-detail">📞 ${c.tel}</div>` : ''}
-      ${c.email ? `<div class="card-detail">✉️ ${c.email}</div>` : ''}
+      ${c.tel     ? `<div class="card-detail">📞 ${c.tel}</div>` : ''}
+      ${c.email   ? `<div class="card-detail">✉️ ${c.email}</div>` : ''}
       ${c.adresse ? `<div class="card-detail">📍 ${c.adresse}</div>` : ''}
-      ${c.notes ? `<div class="card-detail" style="color:#6b7280;font-style:italic">${c.notes}</div>` : ''}
+      ${c.notes   ? `<div class="card-detail" style="font-style:italic">${c.notes}</div>` : ''}
     </div>
   `).join('');
 }
@@ -182,7 +185,7 @@ let lignesDevis = [];
 function renderDevis() {
   const container = document.getElementById('devis-list');
   if (data.devis.length === 0) {
-    container.innerHTML = '<div class="empty-state">Aucun devis. Cliquez sur "+ Nouveau devis" pour commencer.</div>';
+    container.innerHTML = '<div class="empty-state"><span class="empty-icon">📄</span>Aucun devis. Cliquez sur "+ Nouveau devis" pour commencer.</div>';
     return;
   }
   container.innerHTML = data.devis.map(d => {
@@ -319,7 +322,7 @@ function deleteDevis(id) {
 function renderChantiers() {
   const container = document.getElementById('chantiers-list');
   if (data.chantiers.length === 0) {
-    container.innerHTML = '<div class="empty-state">Aucun chantier. Cliquez sur "+ Nouveau chantier" pour commencer.</div>';
+    container.innerHTML = '<div class="empty-state"><span class="empty-icon">🏗️</span>Aucun chantier. Cliquez sur "+ Nouveau chantier" pour commencer.</div>';
     return;
   }
   container.innerHTML = data.chantiers.map(c => buildChantierCard(c)).join('');
@@ -416,7 +419,7 @@ document.querySelector('[onclick="openModal(\'modal-chantier\')"]').addEventList
 function renderMateriaux() {
   const container = document.getElementById('materiaux-list');
   if (data.materiaux.length === 0) {
-    container.innerHTML = '<div class="empty-state">Aucun article en stock. Cliquez sur "+ Ajouter article".</div>';
+    container.innerHTML = '<div class="empty-state"><span class="empty-icon">📦</span>Aucun article en stock. Cliquez sur "+ Ajouter article".</div>';
     return;
   }
   container.innerHTML = data.materiaux.map(m => `
@@ -511,6 +514,11 @@ function updateClientSelects() {
 // Formate un nombre en euros
 function formatEuro(val) {
   return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(val || 0);
+}
+
+// Retourne les 2 premières initiales d'un nom
+function initiales(nom) {
+  return nom.trim().split(/\s+/).slice(0, 2).map(p => p[0].toUpperCase()).join('');
 }
 
 // Retourne la date du jour au format YYYY-MM-DD
