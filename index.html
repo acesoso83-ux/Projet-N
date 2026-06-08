@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Artisan Pro</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- BARRE LATÉRALE -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span class="logo-icon">🔧</span>
+      <span class="logo-text">Artisan Pro</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#" class="nav-item active" data-module="dashboard">
+        <span class="nav-icon">🏠</span><span>Tableau de bord</span>
+      </a></li>
+      <li><a href="#" class="nav-item" data-module="clients">
+        <span class="nav-icon">👥</span><span>Clients</span>
+      </a></li>
+      <li><a href="#" class="nav-item" data-module="devis">
+        <span class="nav-icon">📄</span><span>Devis</span>
+      </a></li>
+      <li><a href="#" class="nav-item" data-module="chantiers">
+        <span class="nav-icon">🏗️</span><span>Chantiers</span>
+      </a></li>
+      <li><a href="#" class="nav-item" data-module="materiaux">
+        <span class="nav-icon">📦</span><span>Matériaux</span>
+      </a></li>
+    </ul>
+    <div class="sidebar-footer">v1.0</div>
+  </nav>
+
+  <!-- CONTENU PRINCIPAL -->
+  <main class="main-content" id="main-content">
+
+    <!-- TABLEAU DE BORD -->
+    <section class="module active" id="module-dashboard">
+      <div class="page-header">
+        <h1>Tableau de bord</h1>
+        <p class="subtitle">Bienvenue dans Artisan Pro</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card" onclick="goTo('clients')">
+          <div class="stat-icon">👥</div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-clients">0</span>
+            <span class="stat-label">Clients</span>
+          </div>
+        </div>
+        <div class="stat-card" onclick="goTo('devis')">
+          <div class="stat-icon">📄</div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-devis">0</span>
+            <span class="stat-label">Devis</span>
+          </div>
+        </div>
+        <div class="stat-card" onclick="goTo('chantiers')">
+          <div class="stat-icon">🏗️</div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-chantiers">0</span>
+            <span class="stat-label">Chantiers</span>
+          </div>
+        </div>
+        <div class="stat-card" onclick="goTo('materiaux')">
+          <div class="stat-icon">📦</div>
+          <div class="stat-info">
+            <span class="stat-value" id="stat-materiaux">0</span>
+            <span class="stat-label">Articles stock</span>
+          </div>
+        </div>
+      </div>
+      <div class="recent-section">
+        <h2>Chantiers en cours</h2>
+        <div id="dashboard-chantiers" class="empty-state">Aucun chantier en cours.</div>
+      </div>
+    </section>
+
+    <!-- MODULE CLIENTS -->
+    <section class="module" id="module-clients">
+      <div class="page-header">
+        <h1>👥 Clients</h1>
+        <button class="btn btn-primary" onclick="openModal('modal-client')">+ Nouveau client</button>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="search-clients" placeholder="Rechercher un client..." oninput="renderClients()" />
+      </div>
+      <div id="clients-list" class="cards-grid"></div>
+    </section>
+
+    <!-- MODULE DEVIS -->
+    <section class="module" id="module-devis">
+      <div class="page-header">
+        <h1>📄 Devis</h1>
+        <button class="btn btn-primary" onclick="openModal('modal-devis')">+ Nouveau devis</button>
+      </div>
+      <div id="devis-list" class="cards-grid"></div>
+    </section>
+
+    <!-- MODULE CHANTIERS -->
+    <section class="module" id="module-chantiers">
+      <div class="page-header">
+        <h1>🏗️ Chantiers</h1>
+        <button class="btn btn-primary" onclick="openModal('modal-chantier')">+ Nouveau chantier</button>
+      </div>
+      <div id="chantiers-list" class="cards-grid"></div>
+    </section>
+
+    <!-- MODULE MATÉRIAUX -->
+    <section class="module" id="module-materiaux">
+      <div class="page-header">
+        <h1>📦 Matériaux & Stock</h1>
+        <button class="btn btn-primary" onclick="openModal('modal-materiau')">+ Ajouter article</button>
+      </div>
+      <div id="materiaux-list" class="cards-grid"></div>
+    </section>
+
+  </main>
+
+  <!-- ========== MODALS ========== -->
+
+  <!-- Modal Client -->
+  <div class="modal-overlay" id="modal-client">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modal-client-title">Nouveau client</h2>
+        <button class="modal-close" onclick="closeModal('modal-client')">✕</button>
+      </div>
+      <form id="form-client" onsubmit="saveClient(event)">
+        <input type="hidden" id="client-id" />
+        <div class="form-group">
+          <label>Nom complet *</label>
+          <input type="text" id="client-nom" required placeholder="Jean Dupont" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Téléphone</label>
+            <input type="tel" id="client-tel" placeholder="06 00 00 00 00" />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="client-email" placeholder="jean@email.com" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Adresse</label>
+          <input type="text" id="client-adresse" placeholder="12 rue des Lilas, 75001 Paris" />
+        </div>
+        <div class="form-group">
+          <label>Notes</label>
+          <textarea id="client-notes" placeholder="Informations complémentaires..."></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-client')">Annuler</button>
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Devis -->
+  <div class="modal-overlay" id="modal-devis">
+    <div class="modal modal-large">
+      <div class="modal-header">
+        <h2 id="modal-devis-title">Nouveau devis</h2>
+        <button class="modal-close" onclick="closeModal('modal-devis')">✕</button>
+      </div>
+      <form id="form-devis" onsubmit="saveDevis(event)">
+        <input type="hidden" id="devis-id" />
+        <div class="form-row">
+          <div class="form-group">
+            <label>Client *</label>
+            <select id="devis-client" required>
+              <option value="">-- Sélectionner un client --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="devis-date" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description des travaux *</label>
+          <textarea id="devis-description" required placeholder="Décrivez les travaux à réaliser..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Lignes du devis</label>
+          <div id="devis-lignes">
+            <div class="ligne-header">
+              <span>Description</span><span>Qté</span><span>Prix unit. (€)</span><span>Total</span><span></span>
+            </div>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="ajouterLigne()">+ Ajouter une ligne</button>
+        </div>
+        <div class="devis-total">
+          <span>Total HT :</span>
+          <strong id="devis-total-display">0,00 €</strong>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Statut</label>
+            <select id="devis-statut">
+              <option value="brouillon">Brouillon</option>
+              <option value="envoye">Envoyé</option>
+              <option value="accepte">Accepté</option>
+              <option value="refuse">Refusé</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-devis')">Annuler</button>
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Chantier -->
+  <div class="modal-overlay" id="modal-chantier">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modal-chantier-title">Nouveau chantier</h2>
+        <button class="modal-close" onclick="closeModal('modal-chantier')">✕</button>
+      </div>
+      <form id="form-chantier" onsubmit="saveChantier(event)">
+        <input type="hidden" id="chantier-id" />
+        <div class="form-group">
+          <label>Nom du chantier *</label>
+          <input type="text" id="chantier-nom" required placeholder="Rénovation cuisine Dupont" />
+        </div>
+        <div class="form-group">
+          <label>Client</label>
+          <select id="chantier-client">
+            <option value="">-- Sélectionner un client --</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date de début</label>
+            <input type="date" id="chantier-debut" />
+          </div>
+          <div class="form-group">
+            <label>Date de fin prévue</label>
+            <input type="date" id="chantier-fin" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Avancement (%)</label>
+          <input type="range" id="chantier-avancement" min="0" max="100" value="0"
+            oninput="document.getElementById('avancement-val').textContent = this.value + '%'" />
+          <span id="avancement-val">0%</span>
+        </div>
+        <div class="form-group">
+          <label>Statut</label>
+          <select id="chantier-statut">
+            <option value="planifie">Planifié</option>
+            <option value="en-cours">En cours</option>
+            <option value="termine">Terminé</option>
+            <option value="pause">En pause</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Notes</label>
+          <textarea id="chantier-notes" placeholder="Observations, accès, matériaux utilisés..."></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-chantier')">Annuler</button>
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Matériau -->
+  <div class="modal-overlay" id="modal-materiau">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modal-materiau-title">Nouvel article</h2>
+        <button class="modal-close" onclick="closeModal('modal-materiau')">✕</button>
+      </div>
+      <form id="form-materiau" onsubmit="saveMateriau(event)">
+        <input type="hidden" id="materiau-id" />
+        <div class="form-group">
+          <label>Désignation *</label>
+          <input type="text" id="materiau-nom" required placeholder="Ciment Portland 25kg" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Catégorie</label>
+            <input type="text" id="materiau-categorie" placeholder="Maçonnerie, Plomberie..." />
+          </div>
+          <div class="form-group">
+            <label>Unité</label>
+            <select id="materiau-unite">
+              <option>sac</option>
+              <option>m²</option>
+              <option>m³</option>
+              <option>ml</option>
+              <option>pièce</option>
+              <option>litre</option>
+              <option>kg</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Quantité en stock</label>
+            <input type="number" id="materiau-stock" min="0" value="0" />
+          </div>
+          <div class="form-group">
+            <label>Prix unitaire (€)</label>
+            <input type="number" id="materiau-prix" min="0" step="0.01" value="0" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Fournisseur</label>
+          <input type="text" id="materiau-fournisseur" placeholder="Point P, Leroy Merlin..." />
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-materiau')">Annuler</button>
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast de notification -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
